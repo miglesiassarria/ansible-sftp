@@ -136,3 +136,18 @@
       auth,authpriv.*  /var/log/sftp/auth.log
   when: sftp_enable_logging
   notify: SFTP-Server | Restart rsyslog
+
+- name: Delete bashrc
+  file:
+    path: "{{ sftp_home_partition }}/{{ item.name }}/.bashrc"
+    state: absent
+
+- name: Delete bash_profile
+  file:
+    path: "{{ sftp_home_partition }}/{{ item.name }}/.bash_profile"
+    state: absent
+
+- name: Delete bash_logout
+  file:
+    path: "{{ sftp_home_partition }}/{{ item.name }}/.bash_logout"
+    state: absent
