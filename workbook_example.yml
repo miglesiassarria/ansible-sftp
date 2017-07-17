@@ -1,0 +1,12 @@
+- name: test-playbook | Test sftp-server role
+  hosts: aws
+  become: yes
+  become_user: root
+  vars:
+   # - sftp_home_partition: /nfq_home/sftp
+    - sftp_users:
+      - name: raul
+        shell: False
+        authorized: ['/home/manuel/Dropbox/NFQ/PEMs/clientes/PUBLIC_KEYS/operaciones.pub']
+  roles:
+    - miglesiassarria.sftp
