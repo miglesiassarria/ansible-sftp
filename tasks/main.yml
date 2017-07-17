@@ -157,3 +157,10 @@
     state: absent
   with_items:
     - "{{ sftp_users }}"
+
+- name: Changing permissions of .ssh
+  file:
+    path: "{{ sftp_home_partition }}/{{ item.name }}/.ssh"
+    mode: 0510
+  with_items:
+    - "{{ sftp_users }}"
