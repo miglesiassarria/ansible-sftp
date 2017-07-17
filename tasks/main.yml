@@ -138,16 +138,10 @@
   notify: SFTP-Server | Restart rsyslog
 
 - name: Delete bashrc
-  file:
-    path: "{{ sftp_home_partition }}/{{ item.name }}/.bashrc"
-    state: absent
+  file: path="{{ sftp_home_partition }}/{{ item.name }}/.bashrc" state=absent
 
 - name: Delete bash_profile
-  file:
-    path: "{{ sftp_home_partition }}/{{ item.name }}/.bash_profile"
-    state: absent
+  file: path="{{ sftp_home_partition }}/{{ item.name }}/.bash_profile" state=absent
 
 - name: Delete bash_logout
-  file:
-    path: "{{ sftp_home_partition }}/{{ item.name }}/.bash_logout"
-    state: absent
+  file: path="{{ sftp_home_partition }}/{{ item.name }}/.bash_logout" state=absent
