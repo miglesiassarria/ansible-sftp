@@ -2,7 +2,7 @@
 galaxy_info:
   author: Manuel Iglesias-Sarria
   description: "Setup chrooted SFTP service on top of OpenSSH"
-  license:
+  license: GLP
   min_ansible_version: 2.0
 
   platforms:
