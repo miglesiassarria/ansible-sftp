@@ -48,8 +48,7 @@
   user:
     name: "{{ item.name }}"
     groups: "{{ sftp_group_name }}"
-#    home: "{{ sftp_home_partition }}/{{ item.name }}"
-    home: "{{ sftp_home_partition }}"
+    home: "{{ sftp_home_partition }}/{{ item.name }}"
     # `None` means default value -> default is to have a shell
     shell: "{{ None if (item.shell | default(True)) else '/sbin/nologin' }}"
     state: present
