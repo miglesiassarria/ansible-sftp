@@ -48,7 +48,8 @@
   user:
     name: "{{ item.name }}"
     groups: "{{ sftp_group_name }}"
-    home: "{{ sftp_home_partition }}/{{ item.name }}"
+#    home: "{{ sftp_home_partition }}/{{ item.name }}"
+    home: "{{ item.sftp_home_partition }}/{{ item.name }}"
     # `None` means default value -> default is to have a shell
     shell: "{{ None if (item.shell | default(True)) else '/sbin/nologin' }}"
     state: present
@@ -57,7 +58,7 @@
 # A working chrooted SFTP setup requires root:sftgroup ownership of a user's home directory.
 - name: SFTP-Server | Correct ownership and permission of home directories
   file:
-    path: "{{ sftp_home_partition }}/{{ item.name }}"
+    path: "{{ item.sftp_home_partition }}/{{ item.name }}"
     owner: root
     group: "{{ sftp_group_name }}"
     mode: "0750"
@@ -85,7 +86,7 @@
 # Create directories for all SFTP users. Optional, but recommended.
 - name: SFTP-Server | Create directories
   file:
-    path: "{{ sftp_home_partition }}/{{ item[0].name }}/{{ item[1].name | default(item[1]) }}"
+    path: "{{ item.sftp_home_partition }}/{{ item[0].name }}/{{ item[1].name | default(item[1]) }}"
     owner: "{{ item[0].name }}"
     group: "{{ item[0].name }}"
     mode: "{{ item[1].mode | default(0750) }}"
@@ -97,7 +98,7 @@
 # Create directories for individual SFTP users. Optional.
 - name: SFTP-Server | Create directories per user
   file:
-    path: "{{ sftp_home_partition }}/{{ item[0].name }}/{{ item[1].name | default(item[1]) }}"
+    path: "{{ item.sftp_home_partition }}/{{ item[0].name }}/{{ item[1].name | default(item[1]) }}"
     owner: "{{ item[0].name }}"
     group: "{{ item[0].name }}"
     mode: "{{ item[1].mode | default(0750) }}"
@@ -110,7 +111,7 @@
 
 - name: SFTP-Server | Create dev directory for logging
   file:
-    path: "{{ sftp_home_partition }}/{{ item.name }}/dev"
+    path: "{{ item.sftp_home_partition }}/{{ item.name }}/dev"
     owner: root
     group: root
     state: directory
@@ -139,28 +140,28 @@
 
 - name: Delete bashrc
   file:
-    path: "{{ sftp_home_partition }}/{{ item.name }}/.bashrc"
+    path: "{{ item.sftp_home_partition }}/{{ item.name }}/.bashrc"
     state: absent
   with_items:
     - "{{ sftp_users }}"
 
 - name: Delete bash_profile
   file:
-    path: "{{ sftp_home_partition }}/{{ item.name }}/.bash_profile"
+    path: "{{ item.sftp_home_partition }}/{{ item.name }}/.bash_profile"
     state: absent
   with_items:
     - "{{ sftp_users }}"
 
 - name: Delete bash_logout
   file:
-    path: "{{ sftp_home_partition }}/{{ item.name }}/.bash_logout"
+    path: "{{ item.sftp_home_partition }}/{{ item.name }}/.bash_logout"
     state: absent
   with_items:
     - "{{ sftp_users }}"
 
 - name: Changing permissions of .ssh
   file:
-    path: "{{ sftp_home_partition }}/{{ item.name }}/.ssh"
+    path: "{{ item.sftp_home_partition }}/{{ item.name }}/.ssh"
     mode: 0510
   with_items:
     - "{{ sftp_users }}"
